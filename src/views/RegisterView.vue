@@ -90,7 +90,7 @@ const login = async () => {
       }),
     });
     const response = await loginResponse.json();
-    if (response.message.includes("invalid")) {
+    if (response.message && response.message.includes("invalid")) {
       alert(response.message);
     }
   }

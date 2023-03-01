@@ -64,7 +64,7 @@ const login = async () => {
       body: JSON.stringify({ email: email.value, password: password.value }),
     });
     const response = await loginResponse.json();
-    if (response.message.includes("invalid")) {
+    if (response.message && response.message.includes("invalid")) {
       alert(response.message);
     }
   }
