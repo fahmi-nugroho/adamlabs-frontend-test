@@ -52,6 +52,12 @@ import { RouterView } from "vue-router";
   font-size: 30px;
 }
 
+.font-600-24 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+}
+
 .font-600-22 {
   font-style: normal;
   font-weight: 600;
@@ -74,6 +80,12 @@ import { RouterView } from "vue-router";
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
+}
+
+.font-400-18 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
 }
 
 .font-400-16 {

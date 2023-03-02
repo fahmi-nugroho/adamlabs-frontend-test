@@ -80,17 +80,17 @@
             <span class="font-400-24">({{ experienceStore.experiences.length }})</span>
           </div>
           <div style="padding-top: 2px">
-            <img src="../assets/Icons/plus.svg" alt="" />
+            <img @click="showModal = true" src="../assets/Icons/plus.svg" alt="" style="cursor: pointer" />
           </div>
         </div>
         <div v-if="showMore" v-for="ex in experienceStore.experiences">
-          <div style="display: flex;">
-            <div style="margin-top: 24px; margin-right: 24px;">
-              <img v-if="ex.companyName.toLowerCase().includes('insider')" src="../assets/Icons/talent-insider.svg" alt="">
-              <img v-else-if="ex.companyName.toLowerCase().includes('gojek')" src="../assets/Icons/gojek.svg" alt="">
-              <img v-else-if="ex.companyName.toLowerCase().includes('jco')" src="../assets/Icons/jco.svg" alt="">
-              <img v-else-if="ex.companyName.toLowerCase().includes('fiverr')" src="../assets/Icons/fiverr.svg" alt="">
-              <div v-else style="width: 60px; height: 60px; background-color: #d9d9d9; border-radius: 6px;"></div>
+          <div style="display: flex">
+            <div style="margin-top: 24px; margin-right: 24px">
+              <img v-if="ex.companyName.toLowerCase().includes('insider')" src="../assets/Icons/talent-insider.svg" alt="" />
+              <img v-else-if="ex.companyName.toLowerCase().includes('gojek')" src="../assets/Icons/gojek.svg" alt="" />
+              <img v-else-if="ex.companyName.toLowerCase().includes('jco')" src="../assets/Icons/jco.svg" alt="" />
+              <img v-else-if="ex.companyName.toLowerCase().includes('fiverr')" src="../assets/Icons/fiverr.svg" alt="" />
+              <div v-else style="width: 60px; height: 60px; background-color: #d9d9d9; border-radius: 6px"></div>
             </div>
             <div>
               <div class="font-600-22" style="margin-top: 24px">{{ ex.jobTitle }}</div>
@@ -102,13 +102,13 @@
           <hr />
         </div>
         <div v-else v-for="ex in slicedExperience">
-          <div style="display: flex;">
-            <div style="margin-top: 24px; margin-right: 24px;">
-              <img v-if="ex.companyName.toLowerCase().includes('insider')" src="../assets/Icons/talent-insider.svg" alt="">
-              <img v-else-if="ex.companyName.toLowerCase().includes('gojek')" src="../assets/Icons/gojek.svg" alt="">
-              <img v-else-if="ex.companyName.toLowerCase().includes('jco')" src="../assets/Icons/jco.svg" alt="">
-              <img v-else-if="ex.companyName.toLowerCase().includes('fiverr')" src="../assets/Icons/fiverr.svg" alt="">
-              <div v-else style="width: 60px; height: 60px; background-color: #d9d9d9; border-radius: 6px;"></div>
+          <div style="display: flex">
+            <div style="margin-top: 24px; margin-right: 24px">
+              <img v-if="ex.companyName.toLowerCase().includes('insider')" src="../assets/Icons/talent-insider.svg" alt="" />
+              <img v-else-if="ex.companyName.toLowerCase().includes('gojek')" src="../assets/Icons/gojek.svg" alt="" />
+              <img v-else-if="ex.companyName.toLowerCase().includes('jco')" src="../assets/Icons/jco.svg" alt="" />
+              <img v-else-if="ex.companyName.toLowerCase().includes('fiverr')" src="../assets/Icons/fiverr.svg" alt="" />
+              <div v-else style="width: 60px; height: 60px; background-color: #d9d9d9; border-radius: 6px"></div>
             </div>
             <div>
               <div class="font-600-22" style="margin-top: 24px">{{ ex.jobTitle }}</div>
@@ -132,6 +132,51 @@
       </div>
     </div>
     <Footer />
+    <div v-if="showModal" class="modal">
+      <div class="card">
+        <div class="card-title">
+          <div style="display: flex">
+            <div class="font-600-24" style="flex-grow: 1; padding-left: 28px">Add Experience</div>
+            <img @click="showModal = false" src="../assets/Icons/close.svg" alt="" style="margin-left: auto" />
+          </div>
+          <div class="font-400-18">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+        </div>
+        <div class="card-body">
+          <div style="margin-bottom: 30px">
+            <label for="country">Country</label>
+            <input id="country" class="text-field" type="text" placeholder="Enter a country" v-model="country" />
+          </div>
+          <div style="margin-bottom: 30px">
+            <label for="job-title">Job Title</label>
+            <input id="job-title" class="text-field" type="text" placeholder="Enter a position or title" v-model="jobTitle" />
+          </div>
+          <div style="margin-bottom: 30px">
+            <label for="company-name">Company Name</label>
+            <input id="company-name" class="text-field" type="text" placeholder="Ex. Microsoft" v-model="companyName" />
+          </div>
+          <div style="margin-bottom: 30px; display: flex;">
+            <input id="current-status" type="checkbox" v-model="currentStatus" style="width: 30px; height: 30px; margin: 0;" />
+            <label class="font-400-18" for="current-status" style="margin: 0; padding-top: 2px; padding-left: 10px;">I’m currently working in this role</label>
+          </div>
+          <div style="margin-bottom: 30px">
+            <label>Start Date</label>
+            <div style="display: flex;">
+              <input id="start-month" class="text-field" type="text" placeholder="Enter a month" v-model="startMonth" style="margin-right: 20px;"/>
+              <input id="start-year" class="text-field" type="text" placeholder="Enter a year" v-model="startYear" />
+            </div>
+          </div>
+          <div>
+            <label>End Date</label>
+            <div style="display: flex;">
+              <input id="end-month" class="text-field" type="text" placeholder="Enter a month" v-model="endMonth" style="margin-right: 20px;" />
+              <input id="end-year" class="text-field" type="text" placeholder="Enter a year" v-model="endYear" />
+            </div>
+          </div>
+        </div>
+        <button @click="save()" class="big-button" :class="[ disableLogin ? 'save-btn' : 'active' ]">Save</button>
+      </div>
+      <div @click="showModal = false" class="element"></div>
+    </div>
   </div>
 </template>
 
@@ -144,6 +189,7 @@ import { useExperienceStore } from "../stores/experience";
 const experienceStore = useExperienceStore();
 
 const showMore = ref(false);
+const showModal = ref(false);
 const slicedExperience = ref([]);
 
 onMounted(async () => {
@@ -161,6 +207,8 @@ onMounted(async () => {
   experienceStore.setExperiences(response);
   slicedExperience.value = response.slice(0, 4);
 });
+
+const addExperience = () => {};
 </script>
 
 <style scoped>
@@ -267,5 +315,52 @@ onMounted(async () => {
   -ms-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
+}
+.card {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 3;
+  width: 600px;
+  height: 802px;
+  background-color: white;
+  border-radius: 6px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.card-title {
+  text-align: center;
+  padding: 30px 24px;
+  border-bottom: 1px solid black;
+}
+.card-body {
+  padding: 20px 30px;
+  border-bottom: 1px solid black;
+}
+.save-btn {
+  margin-top: 20px;
+  border: none;
+  background-color: #fafafa;
+  color: #787777;
+}
+
+.active {
+  margin-top: 20px;
+  border: none;
+  background-color: #e30607;
+  color: white;
+}
+.element {
+  z-index: 2;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: rgba(30, 30, 30, 0.5);
+  margin: 0 auto;
 }
 </style>
