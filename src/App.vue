@@ -22,6 +22,24 @@ import { RouterView } from "vue-router";
   font-size: 18px;
 }
 
+.font-700-28 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.font-700-24 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.font-700-20 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+}
+
 .font-600-36 {
   font-style: normal;
   font-weight: 600;
@@ -32,6 +50,30 @@ import { RouterView } from "vue-router";
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
+}
+
+.font-600-22 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.font-600-20 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.font-600-18 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.font-400-24 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
 }
 
 .font-400-16 {
@@ -57,7 +99,7 @@ label {
   font-size: 18px;
 }
 
-button {
+.big-button {
   display: block;
   margin-left: auto;
   margin-right: auto;

@@ -12,7 +12,7 @@
         <label for="password">Password</label>
         <input id="password" class="text-field" type="password" placeholder="Enter Password" v-model="password" />
       </div>
-      <button @click="login()" :class="[ disableLogin ? 'login-btn' : 'active' ]">Log In</button>
+      <button @click="login()" class="big-button" :class="[ disableLogin ? 'login-btn' : 'active' ]">Log In</button>
       <div class="signup-login">
         <small style="color: #787777">New to Xplore? <b @click="goToRegister()" style="cursor: pointer">Sign Up</b></small>
         <small style="cursor: pointer; color: #787777">Forgot Password?</small>
@@ -22,7 +22,7 @@
         <small style="margin: 0px 10px">Or</small>
         <hr />
       </div>
-      <button class="google-btn">
+      <button class="big-button google-btn">
         <img style="margin-right: 20px" src="../assets/Icons/Google.svg" alt="" />
         <div>Log In with Google</div>
       </button>

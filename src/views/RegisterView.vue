@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <button class="login-btn" style="margin-top: 48px">Sign Up</button>
+      <button class="big-button login-btn" style="margin-top: 48px">Sign Up</button>
       <div class="login-signup">
         <small style="color: #787777">Already Have An Account? <b @click="goToLogin()" style="cursor: pointer">Log In</b></small>
       </div>
@@ -45,7 +45,7 @@
         <small style="margin: 0px 10px">Or</small>
         <hr />
       </div>
-      <button class="google-btn">
+      <button class="big-button google-btn">
         <img style="margin-right: 20px" src="../assets/Icons/Google.svg" alt="" />
         <div>Sign up with Google</div>
       </button>
