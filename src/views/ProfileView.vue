@@ -144,7 +144,7 @@
         <div class="card-body">
           <div style="margin-bottom: 30px">
             <label for="country">Country</label>
-            <input id="country" class="text-field" type="text" placeholder="Enter a country" v-model="country" />
+            <input id="country" class="text-field" type="text" placeholder="Enter a country" v-model="Country" />
           </div>
           <div style="margin-bottom: 30px">
             <label for="job-title">Job Title</label>
@@ -152,28 +152,32 @@
           </div>
           <div style="margin-bottom: 30px">
             <label for="company-name">Company Name</label>
-            <input id="company-name" class="text-field" type="text" placeholder="Ex. Microsoft" v-model="companyName" />
+            <input id="company-name" class="text-field" type="text" placeholder="Ex. Microsoft" v-model="CompanyName" />
           </div>
-          <div style="margin-bottom: 30px; display: flex;">
-            <input id="current-status" type="checkbox" v-model="currentStatus" style="width: 30px; height: 30px; margin: 0;" />
-            <label class="font-400-18" for="current-status" style="margin: 0; padding-top: 2px; padding-left: 10px;">I’m currently working in this role</label>
+          <div style="margin-bottom: 30px; display: flex">
+            <input id="current-status" type="checkbox" v-model="currentJob" style="width: 30px; height: 30px; margin: 0" />
+            <label class="font-400-18" for="current-status" style="margin: 0; padding-top: 2px; padding-left: 10px">I’m currently working in this role</label>
           </div>
           <div style="margin-bottom: 30px">
             <label>Start Date</label>
-            <div style="display: flex;">
-              <input id="start-month" class="text-field" type="text" placeholder="Enter a month" v-model="startMonth" style="margin-right: 20px;"/>
+            <div style="display: flex">
+              <input id="start-month" class="text-field" type="text" placeholder="Enter a month" v-model="startMonth" style="margin-right: 20px" />
               <input id="start-year" class="text-field" type="text" placeholder="Enter a year" v-model="startYear" />
             </div>
           </div>
-          <div>
+          <div style="margin-bottom: 30px">
             <label>End Date</label>
-            <div style="display: flex;">
-              <input id="end-month" class="text-field" type="text" placeholder="Enter a month" v-model="endMonth" style="margin-right: 20px;" />
+            <div style="display: flex">
+              <input id="end-month" class="text-field" type="text" placeholder="Enter a month" v-model="endMonth" style="margin-right: 20px" />
               <input id="end-year" class="text-field" type="text" placeholder="Enter a year" v-model="endYear" />
             </div>
           </div>
+          <div>
+            <label for="description">Description</label>
+            <textarea id="description" v-model="description" style="width: 100%; height: 100px"></textarea>
+          </div>
         </div>
-        <button @click="save()" class="big-button" :class="[ disableLogin ? 'save-btn' : 'active' ]">Save</button>
+        <button @click="save()" class="big-button" :class="[disableLogin ? 'save-btn' : 'active']">Save</button>
       </div>
       <div @click="showModal = false" class="element"></div>
     </div>
@@ -192,6 +196,15 @@ const showMore = ref(false);
 const showModal = ref(false);
 const slicedExperience = ref([]);
 
+const CompanyName = ref(null);
+const Country = ref(null);
+const jobTitle = ref(null);
+const createdBy = ref(null);
+const start = ref(null);
+const end = ref(null);
+const currentJob = ref(null);
+const description = ref(null);
+
 onMounted(async () => {
   const getExperienceResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/experiences", {
     method: "GET",
@@ -208,7 +221,22 @@ onMounted(async () => {
   slicedExperience.value = response.slice(0, 4);
 });
 
-const addExperience = () => {};
+const save = async () => {
+  if (true) {
+    const loginResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/auth/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email.value, password: password.value }),
+    });
+    const response = await loginResponse.json();
+    if (response.message && response.message.includes("invalid")) {
+      alert(response.message);
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -339,6 +367,8 @@ const addExperience = () => {};
 .card-body {
   padding: 20px 30px;
   border-bottom: 1px solid black;
+  height: 604px;
+  overflow: scroll;
 }
 .save-btn {
   margin-top: 20px;

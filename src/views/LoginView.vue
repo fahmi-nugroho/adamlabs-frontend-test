@@ -12,7 +12,7 @@
         <label for="password">Password</label>
         <input id="password" class="text-field" type="password" placeholder="Enter Password" v-model="password" />
       </div>
-      <button @click="login()" class="big-button" :class="[ disableLogin ? 'login-btn' : 'active' ]">Log In</button>
+      <button @click="login()" class="big-button" :class="[disableLogin ? 'login-btn' : 'active']">Log In</button>
       <div class="signup-login">
         <small style="color: #787777">New to Xplore? <b @click="goToRegister()" style="cursor: pointer">Sign Up</b></small>
         <small style="cursor: pointer; color: #787777">Forgot Password?</small>
@@ -39,11 +39,11 @@ import { computed } from "@vue/reactivity";
 
 const router = useRouter();
 
-const email = ref(null);
-const password = ref(null);
+const email = ref("");
+const password = ref("");
 
 const disableLogin = computed(() => {
-  if (email.value === null || password.value === null || email.value === "" || password.value === "") {
+  if (email.value === "" || password.value === "") {
     return true;
   }
   return false;
@@ -54,7 +54,7 @@ const goToRegister = () => {
 };
 
 const login = async () => {
-  if (email.value === null || password.value === null || email.value === "" || password.value === "") {
+  if (email.value != "" && password.value != "") {
     const loginResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/auth/login", {
       method: "POST",
       headers: {
@@ -66,6 +66,8 @@ const login = async () => {
     const response = await loginResponse.json();
     if (response.message && response.message.includes("invalid")) {
       alert(response.message);
+    } else {
+      router.push({ name: "profile" });
     }
   }
 };

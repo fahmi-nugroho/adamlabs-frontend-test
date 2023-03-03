@@ -29,14 +29,14 @@
             <input id="last-name" class="text-field" type="text" v-model="lastName" />
           </div>
           <div class="radio-container">
-            <input type="radio" name="user-type" id="student" class="radio" value="student" v-model="userType" />
+            <input type="radio" name="user-type" id="student" class="radio" value="Student" v-model="userType" />
             <label for="student" style="margin-bottom: 0px; margin-top: 2px">I’m a Student</label>
-            <input type="radio" name="user-type" id="professional" class="radio" value="professional" v-model="userType" />
+            <input type="radio" name="user-type" id="professional" class="radio" value="Professional" v-model="userType" />
             <label for="professional" style="margin-bottom: 0px; margin-top: 2px">I’m a Professional</label>
           </div>
         </div>
       </div>
-      <button class="big-button login-btn" style="margin-top: 48px">Sign Up</button>
+      <button @click="register()" class="big-button" :class="[disableLogin ? 'login-btn' : 'active']" style="margin-top: 48px">Sign Up</button>
       <div class="login-signup">
         <small style="color: #787777">Already Have An Account? <b @click="goToLogin()" style="cursor: pointer">Log In</b></small>
       </div>
@@ -57,36 +57,43 @@
 import HeaderAuth from "../components/HeaderAuth.vue";
 import AuthShadow from "../components/AuthShadow.vue";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const router = useRouter();
 
-const firstName = ref(null);
-const lastName = ref(null);
-const email = ref(null);
-const password = ref(null);
+const firstName = ref("");
+const lastName = ref("");
+const email = ref("");
+const password = ref("");
 const phoneNumber = ref(null);
-const userType = ref(null);
+const userType = ref("");
+
+const disableLogin = computed(() => {
+  if (email.value === "" || password.value === "" || (phoneNumber.value === null || phoneNumber.value === "") || firstName.value === "" || lastName.value === "" || userType.value === "") {
+    return true;
+  }
+  return false;
+});
 
 const goToLogin = () => {
   router.push({ name: "login" });
 };
 
-const login = async () => {
-  if (email.value != null && password.value != null) {
+const register = async () => {
+  if (email.value != "" && password.value != "" && phoneNumber.value != null && firstName.value != "" && lastName.value != "" && userType.value != "") {
     const loginResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/auth/register", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ 
-        firstName: firstName.value, 
-        lastName: lastName.value, 
-        email: email.value, 
+      body: JSON.stringify({
+        firstName: firstName.value,
+        lastName: lastName.value,
+        email: email.value,
         password: password.value,
-        phoneNumber: phoneNumber.value,
-        userType: userType.value
+        phoneNumber: String(phoneNumber.value),
+        userType: userType.value,
       }),
     });
     const response = await loginResponse.json();
@@ -133,6 +140,12 @@ const login = async () => {
   border: none;
   background-color: #fafafa;
   color: #787777;
+}
+
+.active {
+  border: none;
+  background-color: #e30607;
+  color: white;
 }
 
 .login-signup {
