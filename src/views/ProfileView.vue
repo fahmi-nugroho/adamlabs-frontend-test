@@ -7,7 +7,7 @@
         <img src="../assets/Images/big-profile.png" alt="" />
       </div>
       <div class="name-container font-700-28">
-        <div>Amanda Christine</div>
+        <div>{{ authStore.user.firstName }} {{ authStore.user.lastName }}</div>
         <img src="../assets/Icons/flower.svg" alt="" />
         <img src="../assets/Icons/edit.svg" alt="" />
       </div>
@@ -189,8 +189,10 @@ import HeaderProfile from "../components/HeaderProfile.vue";
 import Footer from "../components/Footer.vue";
 import { onMounted, ref } from "vue";
 import { useExperienceStore } from "../stores/experience";
+import { useAuthStore } from "../stores/auth";
 
 const experienceStore = useExperienceStore();
+const authStore = useAuthStore();
 
 const showMore = ref(false);
 const showModal = ref(false);
@@ -199,9 +201,10 @@ const slicedExperience = ref([]);
 const CompanyName = ref(null);
 const Country = ref(null);
 const jobTitle = ref(null);
-const createdBy = ref(null);
-const start = ref(null);
-const end = ref(null);
+const startMonth = ref(null);
+const startYear = ref(null);
+const endMonth = ref(null);
+const endYear = ref(null);
 const currentJob = ref(null);
 const description = ref(null);
 
@@ -223,18 +226,28 @@ onMounted(async () => {
 
 const save = async () => {
   if (true) {
-    const loginResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/auth/login", {
+    const loginResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/experiences", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: "Bearer " + authStore.token,
       },
-      body: JSON.stringify({ email: email.value, password: password.value }),
+      body: JSON.stringify({
+        CompanyName: CompanyName.value,
+        Country: Country.value,
+        createdBy: authStore.user._id,
+        start: startYear.value + "-" + startMonth.value + "-01",
+        end: null,
+        currentJob: currentJob.value,
+        description: description.value,
+      }),
     });
     const response = await loginResponse.json();
-    if (response.message && response.message.includes("invalid")) {
+    if (response.message) {
       alert(response.message);
     }
+    showModal.value = false;
   }
 };
 </script>

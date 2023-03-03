@@ -32,6 +32,20 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from) => {});
+router.beforeEach((to, from, next) => {
+  const authData = localStorage.getItem("auth");
+  if (authData != null && to.meta.requiresAuth) {
+    if (new Date() > new Date(authData.expiresOn)) {
+      localStorage.removeItem("auth");
+      next("/login");
+    } else {
+      next();
+    }
+  } else if (!to.meta.requiresAuth) {
+    next();
+  } else {
+    next("/login");
+  }
+});
 
 export default router;

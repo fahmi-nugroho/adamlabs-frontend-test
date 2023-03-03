@@ -36,8 +36,10 @@ import AuthShadow from "../components/AuthShadow.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { computed } from "@vue/reactivity";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 const email = ref("");
 const password = ref("");
@@ -67,6 +69,12 @@ const login = async () => {
     if (response.message && response.message.includes("invalid")) {
       alert(response.message);
     } else {
+      let data = {
+        expiresOn: response.expiresOn,
+        token: response.token,
+        user: response.user,
+      };
+      authStore.setAuthData(data);
       router.push({ name: "profile" });
     }
   }
