@@ -161,15 +161,15 @@
           <div style="margin-bottom: 30px">
             <label>Start Date</label>
             <div style="display: flex">
-              <input id="start-month" class="text-field" type="text" placeholder="Enter a month" v-model="startMonth" style="margin-right: 20px" />
-              <input id="start-year" class="text-field" type="text" placeholder="Enter a year" v-model="startYear" />
+              <input id="start-month" class="text-field" type="number" max="12" min="1" placeholder="Enter a month" v-model="startMonth" style="margin-right: 20px" />
+              <input id="start-year" class="text-field" type="number" min="1" placeholder="Enter a year" v-model="startYear" />
             </div>
           </div>
           <div style="margin-bottom: 30px">
             <label>End Date</label>
             <div style="display: flex">
-              <input id="end-month" class="text-field" type="text" placeholder="Enter a month" v-model="endMonth" style="margin-right: 20px" />
-              <input id="end-year" class="text-field" type="text" placeholder="Enter a year" v-model="endYear" />
+              <input id="end-month" class="text-field" type="number" max="12" min="1" placeholder="Enter a month" v-model="endMonth" style="margin-right: 20px" />
+              <input id="end-year" class="text-field" type="number" min="1" placeholder="Enter a year" v-model="endYear" />
             </div>
           </div>
           <div>
@@ -177,7 +177,7 @@
             <textarea id="description" v-model="description" style="width: 100%; height: 100px"></textarea>
           </div>
         </div>
-        <button @click="save()" class="big-button" :class="[disableLogin ? 'save-btn' : 'active']">Save</button>
+        <button @click="save()" class="big-button" :class="[disableAddExperience ? 'save-btn' : 'active']">Save</button>
       </div>
       <div @click="showModal = false" class="element"></div>
     </div>
@@ -187,7 +187,7 @@
 <script setup>
 import HeaderProfile from "../components/HeaderProfile.vue";
 import Footer from "../components/Footer.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useExperienceStore } from "../stores/experience";
 import { useAuthStore } from "../stores/auth";
 
@@ -198,15 +198,22 @@ const showMore = ref(false);
 const showModal = ref(false);
 const slicedExperience = ref([]);
 
-const CompanyName = ref(null);
-const Country = ref(null);
-const jobTitle = ref(null);
+const CompanyName = ref("");
+const Country = ref("");
+const jobTitle = ref("");
 const startMonth = ref(null);
 const startYear = ref(null);
 const endMonth = ref(null);
 const endYear = ref(null);
-const currentJob = ref(null);
-const description = ref(null);
+const currentJob = ref(false);
+const description = ref("");
+
+const disableAddExperience = computed(() => {
+  if (CompanyName.value === "" || Country.value === "" || jobTitle.value === "" || startMonth.value == null || startYear.value == null || description.value == "") {
+    return true;
+  }
+  return false;
+});
 
 onMounted(async () => {
   const getExperienceResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/experiences", {
@@ -225,7 +232,7 @@ onMounted(async () => {
 });
 
 const save = async () => {
-  if (true) {
+  if (CompanyName.value != "" && Country.value != "" && jobTitle.value != "" && description.value != "" && startMonth.value != null && startYear.value != null) {
     const loginResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/experiences", {
       method: "POST",
       headers: {

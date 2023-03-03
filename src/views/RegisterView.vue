@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <button @click="register()" class="big-button" :class="[disableLogin ? 'login-btn' : 'active']" style="margin-top: 48px">Sign Up</button>
+      <button @click="register()" class="big-button" :class="[disableRegister ? 'login-btn' : 'active']" style="margin-top: 48px">Sign Up</button>
       <div class="login-signup">
         <small style="color: #787777">Already Have An Account? <b @click="goToLogin()" style="cursor: pointer">Log In</b></small>
       </div>
@@ -68,7 +68,7 @@ const password = ref("");
 const phoneNumber = ref(null);
 const userType = ref("");
 
-const disableLogin = computed(() => {
+const disableRegister = computed(() => {
   if (email.value === "" || password.value === "" || (phoneNumber.value === null || phoneNumber.value === "") || firstName.value === "" || lastName.value === "" || userType.value === "") {
     return true;
   }
