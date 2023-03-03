@@ -216,6 +216,10 @@ const disableAddExperience = computed(() => {
 });
 
 onMounted(async () => {
+  await fetchExperience();
+});
+
+const fetchExperience = async () => {
   const getExperienceResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/experiences", {
     method: "GET",
     headers: {
@@ -229,10 +233,11 @@ onMounted(async () => {
   }
   experienceStore.setExperiences(response);
   slicedExperience.value = response.slice(0, 4);
-});
+};
 
 const save = async () => {
   if (CompanyName.value != "" && Country.value != "" && jobTitle.value != "" && description.value != "" && startMonth.value != null && startYear.value != null) {
+    let month = String(startMonth.value).length < 2 ? "0" + startMonth.value : startMonth.value;
     const loginResponse = await fetch("https://api.kontenbase.com/query/api/v1/e97cd589-1ccb-4cf3-86f9-27a8dd71861f/experiences", {
       method: "POST",
       headers: {
@@ -241,10 +246,11 @@ const save = async () => {
         Authorization: "Bearer " + authStore.token,
       },
       body: JSON.stringify({
-        CompanyName: CompanyName.value,
-        Country: Country.value,
+        jobTitle: jobTitle.value,
+        companyName: CompanyName.value,
+        country: Country.value,
         createdBy: authStore.user._id,
-        start: startYear.value + "-" + startMonth.value + "-01",
+        start: startYear.value + "-" + month + "-01",
         end: null,
         currentJob: currentJob.value,
         description: description.value,
@@ -253,8 +259,11 @@ const save = async () => {
     const response = await loginResponse.json();
     if (response.message) {
       alert(response.message);
+    } else {
+      alert("Data berhasil ditambahkan");
+      await fetchExperience();
+      showModal.value = false;
     }
-    showModal.value = false;
   }
 };
 </script>
